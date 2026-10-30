@@ -8,22 +8,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.demoapp.typicode.presentation.useres.viewcomponent.UserViewItemes
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.demoapp.typicode.presentation.useres.viewmodel.UserViewModel
 
 @Composable
-fun UserListstypicode(){
+fun UserListstypicode(
+    viewModel: UserViewModel = hiltViewModel()
+
+){
+
+
+    val uiState by viewModel.userState.collectAsStateWithLifecycle()
+
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {padding->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
 
-            Row(modifier = Modifier.fillMaxWidth()) {
-
-                UserViewItemes("Name 1", "Email 1", "Company Name 1")
-
-            }
+            UserScreen(
+                state = uiState,
+                onRetryClick = { viewModel.fetchUsers() }
+            )
 
         }
 
